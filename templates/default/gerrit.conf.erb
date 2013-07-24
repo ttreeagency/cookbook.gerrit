@@ -1,0 +1,30 @@
+<VirtualHost *:80>
+	ServerName <%= @params[:server_name] %>
+	DocumentRoot <%= @params[:doc_root] %>
+	DirectoryIndex index.html
+
+	RewriteEngine on
+
+	ProxyRequests Off
+	ProxyVia Off
+ 	ProxyPreserveHost On
+
+	<Proxy *>
+		Order deny,allow
+		Allow from all
+	</Proxy>
+
+ 	ProxyPass /r/ http://localhost:8081/r/
+
+	LogLevel debug
+
+	<Location /r/login/>
+ 		AuthType Basic
+ 		AuthName "Gerrit Code Review"
+ 		Require valid-user
+ 		AuthUserFile '/etc/apache2/gerrit.htpasswd'
+ 	</Location>
+
+	ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:server_name] %>-error.log
+	CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:server_name] %>-access.log combined
+</VirtualHost>

@@ -1,0 +1,18 @@
+[gerrit]
+        basePath = git
+[database]
+        type = H2
+        database = db/ReviewDB
+[auth]
+        type = HTTP
+[sendemail]
+        smtpServer = localhost
+[container]
+        user = gerrit
+        javaHome = /usr/lib/jvm/java-6-openjdk-amd64/jre
+[sshd]
+        listenAddress = *:29418
+[httpd]
+        listenUrl = proxy-http://*:8081/r/
+[cache]
+        directory = cache
